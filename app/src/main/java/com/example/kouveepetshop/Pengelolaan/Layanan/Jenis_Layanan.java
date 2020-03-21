@@ -1,15 +1,15 @@
 package com.example.kouveepetshop.Pengelolaan.Layanan;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,8 +21,6 @@ import com.android.volley.toolbox.Volley;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
-
-import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Layanan_Adapter;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
 
@@ -58,7 +56,7 @@ public class Jenis_Layanan extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addjenis_layanan();
+                addUkuran();
                 ambilData();
                 mAdapter.notifyDataSetChanged();
             }
@@ -80,7 +78,7 @@ public class Jenis_Layanan extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisLayanan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -92,10 +90,10 @@ public class Jenis_Layanan extends AppCompatActivity {
 
                     for (int i = massage.length()-1; i > -1 ; i--){
                         JSONObject massageDetail = massage.getJSONObject(i);
-                        KeteranganDAO layanan = new KeteranganDAO();
-                        layanan.setId(massageDetail.getInt("id"));
-                        layanan.setKeterangan(massageDetail.getString("nama"));
-                        mItems.add(layanan);
+                        KeteranganDAO hewan = new KeteranganDAO();
+                        hewan.setId(massageDetail.getInt("id"));
+                        hewan.setKeterangan(massageDetail.getString("nama"));
+                        mItems.add(hewan);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -114,11 +112,11 @@ public class Jenis_Layanan extends AppCompatActivity {
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
-    private void addjenis_layanan(){
-        final String layanan = jenis_layanan.getText().toString();
+    private void addUkuran(){
+        final String ukuran = jenis_layanan.getText().toString();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisLayanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -141,7 +139,7 @@ public class Jenis_Layanan extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  request = new HashMap<String, String>();
-                request.put("nama", layanan);
+                request.put("nama", ukuran);
                 request.put("created_by", "Yosafat9204");
                 return request;
             }

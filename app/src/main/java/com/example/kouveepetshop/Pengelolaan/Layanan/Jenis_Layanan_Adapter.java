@@ -1,4 +1,4 @@
-package com.example.kouveepetshop.Pengelolaan.Hewan;
+package com.example.kouveepetshop.Pengelolaan.Layanan;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +16,8 @@ import com.example.kouveepetshop.R;
 
 import java.util.ArrayList;
 
-public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Adapter.ViewProcessHolder> {
+public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Adapter.ViewProcessHolder>
+{
     Context context;
     private ArrayList<KeteranganDAO> item;
     private Context mContext;
@@ -42,7 +43,7 @@ public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Ad
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, Ukuran_Hewan_Edit.class);
+                Intent intent = new Intent(mContext, Jenis_layanan_Edit.class);
                 intent.putExtra("id", data.getId());
                 intent.putExtra("keterangan", data.getKeterangan());
                 mContext.startActivity(intent);
@@ -70,6 +71,3 @@ public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Ad
         }
     }
 }
-
-
-

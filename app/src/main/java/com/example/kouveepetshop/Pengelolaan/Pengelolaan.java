@@ -78,10 +78,10 @@ public class Pengelolaan extends AppCompatActivity {
         });
 
         ImageView Jenis_Layanan = findViewById(R.id.menu_jenis_layanan);
-        layanan.setOnClickListener(new View.OnClickListener() {
+        Jenis_Layanan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Pengelolaan.this, Jenis_Layanan.class);
+                Intent i = new Intent(Pengelolaan.this, com.example.kouveepetshop.Pengelolaan.Layanan.Jenis_Layanan.class);
                 startActivity(i);
             }
         });

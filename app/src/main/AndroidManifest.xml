@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".Pengelolaan.Layanan.Jenis_Layanan"></activity>
+        <activity android:name=".Pengelolaan.Layanan.Jenis_layanan_Edit" />
         <activity android:name=".Pengelolaan.Hewan.Ukuran_Hewan_Edit" />
         <activity android:name=".Pengelolaan.Layanan.Layanan_Tambah" />
         <activity
@@ -54,10 +55,10 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
