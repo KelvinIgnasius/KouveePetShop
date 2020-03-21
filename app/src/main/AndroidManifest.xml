@@ -10,7 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Pengelolaan.Layanan.Layanan_Tambah"></activity>
+        <activity android:name=".Pengelolaan.Layanan.Jenis_Layanan"></activity>
+        <activity android:name=".Pengelolaan.Hewan.Ukuran_Hewan_Edit" />
+        <activity android:name=".Pengelolaan.Layanan.Layanan_Tambah" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">

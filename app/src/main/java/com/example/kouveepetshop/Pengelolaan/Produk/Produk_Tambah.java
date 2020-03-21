@@ -39,7 +39,7 @@ public class Produk_Tambah extends AppCompatActivity {
     private String nama;
     private String satuan;
     private Integer harga, jumlah, jumlah_minimal, id_jenis;
-    private final String id_pegawai = "Yosafat9204";
+    private final String id_pegawai = "KelvinAja";
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private ProgressDialog pd;

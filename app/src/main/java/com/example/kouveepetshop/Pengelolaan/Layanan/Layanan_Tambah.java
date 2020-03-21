@@ -36,7 +36,7 @@ public class Layanan_Tambah extends AppCompatActivity {
 
 
     private Integer harga,id_ukuran,id_nama;
-    private final String id_pegawai = "KelvinAja";
+    private final String id_pegawai = "Yosafat9204";
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayList<String> mUkuran = new ArrayList<>();
     private ArrayAdapter<String> adapter;
@@ -89,7 +89,7 @@ public class Layanan_Tambah extends AppCompatActivity {
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/layanan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Layanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -181,10 +181,10 @@ public class Layanan_Tambah extends AppCompatActivity {
                         JSONObject massageDetail = massage.getJSONObject(i);
                         mUkuran.add(massageDetail.getString("nama"));
 
-                        NamaDAO nama = new NamaDAO();
-                        nama.setId(massageDetail.getInt("id"));
-                        nama.setNama(massageDetail.getString("nama"));
-                        ukuran_layanan.add(nama);
+                        NamaDAO ukuran = new NamaDAO();
+                        ukuran.setId(massageDetail.getInt("id"));
+                        ukuran.setNama(massageDetail.getString("nama"));
+                        ukuran_layanan.add(ukuran);
 
                         adapterUkuran.notifyDataSetChanged();
                     }
@@ -209,6 +209,7 @@ public class Layanan_Tambah extends AppCompatActivity {
         String Nama = nama_spinner.getSelectedItem().toString();
         String Ukuran = ukuran_spinner.getSelectedItem().toString();
         NamaDAO nama = new NamaDAO();
+        NamaDAO ukuran = new NamaDAO();
         for (int i = 0 ; i < nama_layanan.size(); i++) {
             nama = nama_layanan.get(i);
             if(nama.getNama().equals(Nama)){
@@ -216,13 +217,13 @@ public class Layanan_Tambah extends AppCompatActivity {
             }
         }
         for (int i = 0 ; i < ukuran_layanan.size(); i++) {
-            nama = ukuran_layanan.get(i);
-            if(nama.getNama().equals(Ukuran)){
+            ukuran = ukuran_layanan.get(i);
+            if(ukuran.getNama().equals(Ukuran)){
                 break;
             }
         }
         id_nama= nama.getId();
-        id_ukuran= nama.getId();
+        id_ukuran= ukuran.getId();
         harga = Integer.parseInt(harga_text.getText().toString());
 
     }

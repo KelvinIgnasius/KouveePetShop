@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.example.kouveepetshop.Pengelolaan.Hewan.Hewan;
 import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Hewan;
 import com.example.kouveepetshop.Pengelolaan.Hewan.Ukuran_Hewan;
+import com.example.kouveepetshop.Pengelolaan.Layanan.Jenis_Layanan;
 import com.example.kouveepetshop.Pengelolaan.Layanan.Layanan;
 import com.example.kouveepetshop.Pengelolaan.Produk.Kategori_Produk;
 import com.example.kouveepetshop.Pengelolaan.Produk.Produk;
@@ -72,6 +73,15 @@ public class Pengelolaan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Pengelolaan.this, Kategori_Produk.class);
+                startActivity(i);
+            }
+        });
+
+        ImageView Jenis_Layanan = findViewById(R.id.menu_jenis_layanan);
+        layanan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Pengelolaan.this, Jenis_Layanan.class);
                 startActivity(i);
             }
         });

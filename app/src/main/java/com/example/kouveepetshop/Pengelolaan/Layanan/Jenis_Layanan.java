@@ -1,4 +1,4 @@
-package com.example.kouveepetshop.Pengelolaan.Hewan;
+package com.example.kouveepetshop.Pengelolaan.Layanan;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -21,6 +21,8 @@ import com.android.volley.toolbox.Volley;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
+
+import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Layanan_Adapter;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
 
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Ukuran_Hewan extends AppCompatActivity {
+public class Jenis_Layanan extends AppCompatActivity {
 
     private RecyclerView.Adapter mAdapter;
     private ArrayList<KeteranganDAO> mItems;
@@ -40,13 +42,13 @@ public class Ukuran_Hewan extends AppCompatActivity {
     private String ip = MainActivity.getIp();
     private RecyclerView.LayoutManager mManager;
     private RecyclerView mRecyclerView;
-    private EditText ukuran_hewan;
+    private EditText jenis_layanan;
     private Button tambah;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ukuran_hewan);
+        setContentView(R.layout.jenis__layanan);
         final PullRefreshLayout layout = findViewById(R.id.swipeRefreshLayout);
 
         init();
@@ -56,7 +58,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addUkuran();
+                addjenis_layanan();
                 ambilData();
                 mAdapter.notifyDataSetChanged();
             }
@@ -78,7 +80,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Ukuranhewan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -90,10 +92,10 @@ public class Ukuran_Hewan extends AppCompatActivity {
 
                     for (int i = massage.length()-1; i > -1 ; i--){
                         JSONObject massageDetail = massage.getJSONObject(i);
-                        KeteranganDAO hewan = new KeteranganDAO();
-                        hewan.setId(massageDetail.getInt("id"));
-                        hewan.setKeterangan(massageDetail.getString("nama"));
-                        mItems.add(hewan);
+                        KeteranganDAO layanan = new KeteranganDAO();
+                        layanan.setId(massageDetail.getInt("id"));
+                        layanan.setKeterangan(massageDetail.getString("nama"));
+                        mItems.add(layanan);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,11 +114,11 @@ public class Ukuran_Hewan extends AppCompatActivity {
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
-    private void addUkuran(){
-        final String ukuran = ukuran_hewan.getText().toString();
+    private void addjenis_layanan(){
+        final String layanan = jenis_layanan.getText().toString();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Ukuranhewan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -139,7 +141,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  request = new HashMap<String, String>();
-                request.put("nama", ukuran);
+                request.put("nama", layanan);
                 request.put("created_by", "Yosafat9204");
                 return request;
             }
@@ -150,13 +152,13 @@ public class Ukuran_Hewan extends AppCompatActivity {
     private void init()
     {
         pd = new ProgressDialog(this);
-        mRecyclerView = findViewById(R.id.recycle_ukuran_hewan);
+        mRecyclerView = findViewById(R.id.recycle_jenis_layanan);
         mItems = new ArrayList<>();
         mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mManager);
-        mAdapter = new Ukuran_Hewan_Adapter(this,mItems);
+        mAdapter = new Jenis_Layanan_Adapter(this,mItems);
         mRecyclerView.setAdapter(mAdapter);
-        ukuran_hewan = findViewById(R.id.ukuran_hewan_tambah);
-        tambah = findViewById(R.id.ukuran_hewan_add);
+        jenis_layanan = findViewById(R.id.jenis_layanan_tambah);
+        tambah = findViewById(R.id.jenis_layanan_add);
     }
 }

@@ -16,19 +16,19 @@ import com.example.kouveepetshop.R;
 
 import java.util.ArrayList;
 
-public class Ukuran_Hewan_Adapter extends RecyclerView.Adapter<Ukuran_Hewan_Adapter.ViewProcessHolder> {
+public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Adapter.ViewProcessHolder> {
     Context context;
     private ArrayList<KeteranganDAO> item;
     private Context mContext;
 
-    public Ukuran_Hewan_Adapter(Context context, ArrayList<KeteranganDAO> item) {
+    public Jenis_Layanan_Adapter(Context context, ArrayList<KeteranganDAO> item) {
         this.context = context;
         this.item = item;
         mContext = context;
     }
 
     @Override
-    public Ukuran_Hewan_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Jenis_Layanan_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list, parent, false);
         ViewProcessHolder processHolder = new ViewProcessHolder(view);
         return processHolder;

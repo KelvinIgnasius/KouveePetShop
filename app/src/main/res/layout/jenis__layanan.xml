@@ -10,17 +10,17 @@
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="380dp"
         android:layout_height="583dp"
-        android:layout_above="@+id/ukuran_hewan_tambah"
+        android:layout_above="@+id/jenis_layanan_tambah"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="10dp"
         app:refreshType="water_drop">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_ukuran_hewan"
+            android:id="@+id/recycle_jenis_layanan"
             android:layout_width="374dp"
             android:layout_height="426dp"
-            android:layout_above="@+id/ukuran_hewan_tambah"
+            android:layout_above="@+id/jenis_layanan_tambah"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
@@ -28,7 +28,7 @@
     </com.baoyz.widget.PullRefreshLayout>
 
     <Button
-        android:id="@+id/ukuran_hewan_add"
+        android:id="@+id/jenis_layanan_add"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -42,15 +42,15 @@
         android:textSize="20dp"/>
 
     <EditText
-        android:id="@+id/ukuran_hewan_tambah"
+        android:id="@+id/jenis_layanan_tambah"
         android:layout_width="300dp"
         android:layout_height="45dp"
-        android:layout_above="@+id/ukuran_hewan_add"
+        android:layout_above="@+id/jenis_layanan_add"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:fontFamily="@font/baloo"
-        android:hint="Ukuran Hewan"
+        android:hint="jenis_layanan"
         android:inputType="text"
         android:outlineAmbientShadowColor="#FFFFFF"
         android:outlineSpotShadowColor="#FFFFFF"
@@ -70,7 +70,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/baloo"
-        android:text="Ukuran Hewan"
+        android:text="jenis_layanan"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="30dp" />
