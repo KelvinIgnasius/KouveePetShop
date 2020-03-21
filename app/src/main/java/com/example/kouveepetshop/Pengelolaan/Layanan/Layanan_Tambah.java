@@ -21,7 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
-import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
+import com.example.kouveepetshop.Pengelolaan.NamaDAO;
 import com.example.kouveepetshop.R;
 
 import org.json.JSONArray;
@@ -35,15 +35,17 @@ import java.util.Map;
 public class Layanan_Tambah extends AppCompatActivity {
 
 
-    private Integer harga;
+    private Integer harga,id_ukuran,id_nama;
     private final String id_pegawai = "KelvinAja";
     private ArrayList<String> mItems = new ArrayList<>();
+    private ArrayList<String> mUkuran = new ArrayList<>();
     private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapterUkuran;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
-    private Spinner kategori_spinner,ukuran_spinner;
-    private ArrayList<LayananDAO> kategori_layanan;
-    private ArrayList<LayananDAO> ukuran_layanan;
+    private Spinner nama_spinner,ukuran_spinner;
+    private ArrayList<NamaDAO> nama_layanan;
+    private ArrayList<NamaDAO> ukuran_layanan;
 
 
     @Override
@@ -52,7 +54,8 @@ public class Layanan_Tambah extends AppCompatActivity {
         setContentView(R.layout.layanan_add);
         pd = new ProgressDialog(this);
         mItems = new ArrayList<>();
-        kategori_layanan = new ArrayList<>();
+        mUkuran = new ArrayList<>();
+        nama_layanan = new ArrayList<>();
         ukuran_layanan = new ArrayList<>();
 
 
@@ -60,10 +63,12 @@ public class Layanan_Tambah extends AppCompatActivity {
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        kategori_spinner = findViewById(R.id.layanan_add_spinner);
-        kategori_spinner.setAdapter(adapter);
+        adapterUkuran = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mUkuran);
+        adapterUkuran.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nama_spinner = findViewById(R.id.layanan_add_spinner);
+        nama_spinner.setAdapter(adapter);
         ukuran_spinner = findViewById(R.id.layanan_spinner_ukuran);
-        ukuran_spinner.setAdapter(adapter);
+        ukuran_spinner.setAdapter(adapterUkuran);
 
 
         loadjson();
@@ -84,7 +89,7 @@ public class Layanan_Tambah extends AppCompatActivity {
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Produk";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/layanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -107,6 +112,8 @@ public class Layanan_Tambah extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  request = new HashMap<String, String>();
+                request.put("id_ukuran_hewan", String.valueOf(id_ukuran));
+                request.put("id_layanan", String.valueOf(id_nama));
                 request.put("harga", String.valueOf(harga));
                 request.put("created_by", id_pegawai);
                 return request;
@@ -133,10 +140,10 @@ public class Layanan_Tambah extends AppCompatActivity {
                         JSONObject massageDetail = massage.getJSONObject(i);
                         mItems.add(massageDetail.getString("nama"));
 
-                        LayananDAO layanan = new LayananDAO();
-                        layanan.setId(massageDetail.getInt("id"));
-                        layanan.setKeterangan(massageDetail.getString("nama"));
-                        kategori_layanan.add(layanan);
+                        NamaDAO nama = new NamaDAO();
+                        nama.setId(massageDetail.getInt("id"));
+                        nama.setNama(massageDetail.getString("nama"));
+                        nama_layanan.add(nama);
 
                         adapter.notifyDataSetChanged();
                     }
@@ -172,14 +179,14 @@ public class Layanan_Tambah extends AppCompatActivity {
 
                     for (int i = 0; i < massage.length(); i++) {
                         JSONObject massageDetail = massage.getJSONObject(i);
-                        mItems.add(massageDetail.getString("nama"));
+                        mUkuran.add(massageDetail.getString("nama"));
 
-                        LayananDAO ukuran = new LayananDAO();
-                        ukuran.setId(massageDetail.getInt("id"));
-                        ukuran.setKeterangan(massageDetail.getString("nama"));
-                        ukuran_layanan.add(ukuran);
+                        NamaDAO nama = new NamaDAO();
+                        nama.setId(massageDetail.getInt("id"));
+                        nama.setNama(massageDetail.getString("nama"));
+                        ukuran_layanan.add(nama);
 
-                        adapter1.notifyDataSetChanged();
+                        adapterUkuran.notifyDataSetChanged();
                     }
                     pd.cancel();
                 } catch (JSONException e) {
@@ -198,15 +205,24 @@ public class Layanan_Tambah extends AppCompatActivity {
     }
 
     private void getValue(){
-        EditText harga_text = findViewById(R.id.produk_tambah_harga);
-
-
-
-        String jenis = kategori_spinner.getSelectedItem().toString();
-        KeteranganDAO keterangan = new KeteranganDAO();
-
-
-
+        EditText harga_text = findViewById(R.id.layanan_tambah_harga);
+        String Nama = nama_spinner.getSelectedItem().toString();
+        String Ukuran = ukuran_spinner.getSelectedItem().toString();
+        NamaDAO nama = new NamaDAO();
+        for (int i = 0 ; i < nama_layanan.size(); i++) {
+            nama = nama_layanan.get(i);
+            if(nama.getNama().equals(Nama)){
+                break;
+            }
+        }
+        for (int i = 0 ; i < ukuran_layanan.size(); i++) {
+            nama = ukuran_layanan.get(i);
+            if(nama.getNama().equals(Ukuran)){
+                break;
+            }
+        }
+        id_nama= nama.getId();
+        id_ukuran= nama.getId();
         harga = Integer.parseInt(harga_text.getText().toString());
 
     }
