@@ -34,10 +34,10 @@ import java.util.Map;
 
 public class Layanan_Edit extends AppCompatActivity {
 
-
-    Integer harga,id_nama,id_ukuran;
+    String nama,ukuran;
+    Integer harga,id_nama,id,id_ukuran;
     EditText harga_text;
-    Spinner kategori_spinner,ukuran_spinner;
+    Spinner nama_spinner,ukuran_spinner;
 
     Button edit, delete;
 
@@ -45,8 +45,11 @@ public class Layanan_Edit extends AppCompatActivity {
     private String ip = MainActivity.getIp();
 
     private ArrayList<String> mItems = new ArrayList<>();
+    private ArrayList<String> mUkuran = new ArrayList<>();
     private ArrayList<KeteranganDAO> nama_layanan;
+    private ArrayList<KeteranganDAO> ukuran_layanan;
     private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapterUkuran;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +57,14 @@ public class Layanan_Edit extends AppCompatActivity {
         setContentView(R.layout.layanan__edit);
 
         init();
-        LoadKategori();
+        LoadLayanan();
+        LoadUkuran();
         setText();
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editProduk();
+                editlayanan();
 
                 //Supaya dia balik ke halaman sebelumnya kalau udah selesai edit
                 Intent returnIntent = new Intent();
@@ -72,7 +76,7 @@ public class Layanan_Edit extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deletProduk();
+                deletlayanan();
 
                 Intent returnIntent = new Intent();
                 setResult(RESULT_OK,returnIntent);
@@ -81,12 +85,12 @@ public class Layanan_Edit extends AppCompatActivity {
         });
     }
 
-    //Ngmbil data Kategori Produk untuk spinnernya
-    private void LoadKategori() {
+    //Ngmbil data Kategori layanan untuk spinnernya
+    private void LoadLayanan() {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/KategoriProduk/";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -99,20 +103,20 @@ public class Layanan_Edit extends AppCompatActivity {
                     for (int i = 0; i < massage.length(); i++) {
                         JSONObject massageDetail = massage.getJSONObject(i);
 
-                        mItems.add(massageDetail.getString("keterangan"));
+                        mItems.add(massageDetail.getString("nama"));
 
                         KeteranganDAO keterangan = new KeteranganDAO();
                         keterangan.setId(massageDetail.getInt("id"));
-                        keterangan.setKeterangan(massageDetail.getString("keterangan"));
-                        kategori_produk.add(keterangan);
+                        keterangan.setKeterangan(massageDetail.getString("nama"));
+                        nama_layanan.add(keterangan);
 
                         adapter.notifyDataSetChanged();
                     }
 
-                    String jenis = getIntent().getStringExtra("kategori");
+                    String jenis = getIntent().getStringExtra("nama");
                     for (int i = 0 ; i < mItems.size(); i++) {
                         if(mItems.get(i).equals(jenis)){
-                            kategori_spinner.setSelection(i);
+                            nama_spinner.setSelection(i);
                             break;
                         }
                     }
@@ -133,65 +137,119 @@ public class Layanan_Edit extends AppCompatActivity {
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
-    // Untuk ngambil data yang udah dikasih dari Produk_Adapter. Terus datanya langsung di set ke EditText
+    private void LoadUkuran() {
+        pd.setMessage("Mengambil Data");
+        pd.setCancelable(false);
+        pd.show();
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/ukuranhewan/";
+
+        JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("volley", "response : " + response.toString());
+
+                try {
+                    JSONArray massage = response.getJSONArray("message");
+
+                    for (int i = 0; i < massage.length(); i++) {
+                        JSONObject massageDetail = massage.getJSONObject(i);
+
+                        mUkuran.add(massageDetail.getString("nama"));
+
+                        KeteranganDAO keterangan = new KeteranganDAO();
+                        keterangan.setId(massageDetail.getInt("id"));
+                        keterangan.setKeterangan(massageDetail.getString("nama"));
+                        ukuran_layanan.add(keterangan);
+
+                        adapterUkuran.notifyDataSetChanged();
+                    }
+
+                    String jenis = getIntent().getStringExtra("ukuran");
+                    for (int i = 0 ; i < mUkuran.size(); i++) {
+                        if(mUkuran.get(i).equals(jenis)){
+                            ukuran_spinner.setSelection(i);
+                            break;
+                        }
+                    }
+
+                    pd.cancel();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pd.cancel();
+                Log.d("volley", "error : " + error.getMessage());
+            }
+        });
+        Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
+    }
+
+    // Untuk ngambil data yang udah dikasih dari layanan_Adapter. Terus datanya langsung di set ke EditText
     private void setText(){
         if (getIntent().hasExtra("nama")) {
             id = getIntent().getIntExtra("id", -1);
             Log.d("ID", String.valueOf(id));
-            nama_text.setText(getIntent().getStringExtra("nama"));
             harga_text.setText(String.valueOf(getIntent().getIntExtra("harga", 0)));
-            satuan_text.setText(getIntent().getStringExtra("satuan"));
-            jmlh_text.setText(String.valueOf(getIntent().getIntExtra("jmlh", 0)));
-            jmlh_min_text.setText(String.valueOf(getIntent().getIntExtra("jmlh_min", 0)));
+
         }
     }
 
     private void init(){
         pd = new ProgressDialog(this);
 
-        kategori_produk = new ArrayList<>();
+        ukuran_layanan = new ArrayList<>();
+        nama_layanan = new ArrayList<>();
+
         mItems = new ArrayList<>();
+        mUkuran = new ArrayList<>();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        kategori_spinner = findViewById(R.id.produk_edit_spinner);
-        kategori_spinner.setAdapter(adapter);
-
-        nama_text = findViewById(R.id.produk_edit_nama);
-        harga_text = findViewById(R.id.produk_edit_harga);
-        satuan_text = findViewById(R.id.produk_edit_satuan);
-        jmlh_text = findViewById(R.id.produk_edit_jmlh);
-        jmlh_min_text = findViewById(R.id.produk_edit_jmlh_min);
-        kategori_spinner = findViewById(R.id.produk_edit_spinner);
-
-        edit = findViewById(R.id.produk_edit_edit);
-        delete = findViewById(R.id.produk_edit_delete);
+        adapterUkuran = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mUkuran);
+        adapterUkuran.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        nama_spinner = findViewById(R.id.layanan_nama_edit_spinner);
+        ukuran_spinner = findViewById(R.id.layanan_edit_spinner);
+        nama_spinner.setAdapter(adapter);
+        ukuran_spinner.setAdapter(adapterUkuran);
+        harga_text = findViewById(R.id.layanan_edit_harga);
+        edit = findViewById(R.id.layanan_edit_edit);
+        delete = findViewById(R.id.layanan_edit_delete);
     }
 
     //Ngambil Data dari Edit Text
     private void getValue(){
 
-        nama = nama_text.getText().toString();
-        String jenis = kategori_spinner.getSelectedItem().toString();
+
+        String jenis = nama_spinner.getSelectedItem().toString();
+        String ukuran = ukuran_spinner.getSelectedItem().toString();
         KeteranganDAO keterangan = new KeteranganDAO();
 
-        for (int i = 0 ; i < kategori_produk.size(); i++) {
-            keterangan = kategori_produk.get(i);
+        for (int i = 0 ; i < nama_layanan.size(); i++) {
+            keterangan = nama_layanan.get(i);
             if(keterangan.getKeterangan().equals(jenis)){
                 break;
             }
         }
-        id_jenis = keterangan.getId();
+        for (int i = 0 ; i < ukuran_layanan.size(); i++) {
+            keterangan = ukuran_layanan.get(i);
+            if(keterangan.getKeterangan().equals(ukuran)){
+                break;
+            }
+        }
+        id_ukuran= keterangan.getId();
+        id_nama = keterangan.getId();
         harga = Integer.parseInt(harga_text.getText().toString());
-        satuan = satuan_text.getText().toString();
-        jmlh = Integer.parseInt(jmlh_text.getText().toString());
-        jmlh_min = Integer.parseInt(jmlh_min_text.getText().toString());
+
     }
 
-    private void editProduk(){
+    private void editlayanan(){
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Produk/"+ id;
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Layanan/"+ id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -214,12 +272,9 @@ public class Layanan_Edit extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  request = new HashMap<String, String>();
-                request.put("nama", nama);
-                request.put("id_kategori_produk",  String.valueOf(id_jenis));
+                request.put("id_layanan", String.valueOf(id_nama));
+                request.put("id_ukuran_hewan",  String.valueOf(id_ukuran));
                 request.put("harga", String.valueOf(harga));
-                request.put("satuan", String.valueOf(satuan));
-                request.put("jmlh", String.valueOf(jmlh));
-                request.put("jmlh_min", String.valueOf(jmlh_min));
                 request.put("updated_by", "Yosafat9204");
                 return request;
             }
@@ -227,9 +282,9 @@ public class Layanan_Edit extends AppCompatActivity {
         queue.add(postRequest);
     }
 
-    private void deletProduk(){
+    private void deletlayanan(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Produk/delete/"+ id;
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Layanan/delete/"+ id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -135,14 +136,15 @@ public class Jenis_Layanan extends AppCompatActivity {
                         Log.d("Error.Response", error.toString());
                     }
                 }
-        ) {
+        )
+
+        {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  request = new HashMap<String, String>();
-                request.put("nama", layanan);
-                request.put("created_by", "Yosafat9204");
-                return request;
+            public Map<String, String> getHeaders()  {
+                Map<String, String> params= new HashMap<String, String>();
+                params.put("nama", layanan);
+                params.put("created_by", "Yosafat9204");
+                return params;
             }
         };
         queue.add(postRequest);
