@@ -1,15 +1,15 @@
 package com.example.kouveepetshop.Pengelolaan.Layanan;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Jenis_Layanan extends AppCompatActivity {
 
@@ -56,7 +57,7 @@ public class Jenis_Layanan extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addUkuran();
+                addjenislayanan();
                 ambilData();
                 mAdapter.notifyDataSetChanged();
             }
@@ -78,7 +79,7 @@ public class Jenis_Layanan extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisLayanan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -90,10 +91,10 @@ public class Jenis_Layanan extends AppCompatActivity {
 
                     for (int i = massage.length()-1; i > -1 ; i--){
                         JSONObject massageDetail = massage.getJSONObject(i);
-                        KeteranganDAO hewan = new KeteranganDAO();
-                        hewan.setId(massageDetail.getInt("id"));
-                        hewan.setKeterangan(massageDetail.getString("nama"));
-                        mItems.add(hewan);
+                        KeteranganDAO layanan = new KeteranganDAO();
+                        layanan.setId(massageDetail.getInt("id"));
+                        layanan.setKeterangan(massageDetail.getString("nama"));
+                        mItems.add(layanan);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,11 +113,11 @@ public class Jenis_Layanan extends AppCompatActivity {
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
-    private void addUkuran(){
-        final String ukuran = jenis_layanan.getText().toString();
+    private void addjenislayanan(){
+        final String layanan = jenis_layanan.getText().toString();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisLayanan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -139,7 +140,7 @@ public class Jenis_Layanan extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  request = new HashMap<String, String>();
-                request.put("nama", ukuran);
+                request.put("nama", layanan);
                 request.put("created_by", "Yosafat9204");
                 return request;
             }
