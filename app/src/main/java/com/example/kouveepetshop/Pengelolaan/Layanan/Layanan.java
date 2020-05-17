@@ -38,7 +38,7 @@ import java.util.ArrayList;
 
 public class Layanan extends AppCompatActivity {
 
-    private RecyclerView.Adapter mAdapter;
+    private Layanan_Adapter mAdapter;
     private ArrayList<LayananDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();

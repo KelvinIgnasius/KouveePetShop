@@ -140,11 +140,12 @@ public class Jenis_Layanan extends AppCompatActivity {
 
         {
             @Override
-            public Map<String, String> getHeaders()  {
-                Map<String, String> params= new HashMap<String, String>();
-                params.put("nama", layanan);
-                params.put("created_by", "Yosafat9204");
-                return params;
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  request = new HashMap<String, String>();
+                request.put("nama", layanan);
+                request.put("created_by", "Yosafat9204");
+                return request;
             }
         };
         queue.add(postRequest);
